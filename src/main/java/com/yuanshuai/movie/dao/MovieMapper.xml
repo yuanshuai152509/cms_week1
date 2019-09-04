@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuanshuai.movie.dao.MovieMapper">
+	<select id="MovieListAll" resultType="map">
+select a.mid,a.mname,a.anys,a.dates,a.actor, GROUP_CONCAT(c.tname)tname from t_movie a LEFT JOIN t_center
+ b on a.mid=b.mid left join t_type c on c.tid=c.tid GROUP BY a.mid 
+	<if test="mname!=null and mname!=''">
+ 	and a.mname like "%"#{mname}"%"
+ 	</if>
+ 	
+	</select>
+	<select id="TypeListAll" resultType="Type">
+		select * from t_type 
+	</select>
+	<insert id="AddMovie">
+		insert into t_movie set mname=#{mname},anys=#{anys},dates=#{dates},actor=#{actor},tname=#{tname}
+	</insert>
+	<select id="getMovie" resultType="movie">
+		select * from t_movie where mid=#{mid}
+	</select>
+	<update id="updateMovie">
+		update t_movie set mname=#{mname},anys=#{anys},dates=#{dates},actor=#{actor},tname=#{tname} where mid
+		 =#{mid}
+	</update>
+	<delete id="deleMovie">
+		delete from t_movie where mid in (${value})
+	</delete>
+	
+</mapper>
